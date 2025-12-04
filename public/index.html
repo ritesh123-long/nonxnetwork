@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Cloudflare Detect Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>body{font-family:system-ui;padding:20px;max-width:900px;margin:auto}pre{background:#f4f4f4;padding:10px;white-space:pre-wrap}input{padding:8px;font-size:16px;width:60%}button{padding:8px 12px;font-size:16px}</style>
+</head>
+<body>
+  <h1>Cloudflare Detect Dashboard</h1>
+  <p>Domain daalein (example.com):</p>
+  <input id="d" placeholder="example.com" />
+  <button id="go">Check</button>
+  <p id="note">Result below:</p>
+  <pre id="out">Ready</pre>
+
+<script>
+document.getElementById('go').onclick = async ()=>{
+  const d = document.getElementById('d').value.trim();
+  if(!d){ alert('Domain daalein'); return; }
+  document.getElementById('out').textContent = 'Checking...';
+  try {
+    const res = await fetch(`/api/detect?domain=${encodeURIComponent(d)}`);
+    const j = await res.json();
+    document.getElementById('out').textContent = JSON.stringify(j, null, 2);
+  } catch(e){ document.getElementById('out').textContent = 'Error: '+e; }
+};
+</script>
+</body>
+</html>
